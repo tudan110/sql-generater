@@ -12,6 +12,6 @@ import indi.tudan.ddlgenerater.utils.FreemarkerUtil;
 public class TableCreater {
 
     public static String createTable() {
-        return FreemarkerUtil.parseTpl("index", null);
+        return FreemarkerUtil.parseTpl("create", null);
     }
 }
