@@ -1,13 +1,14 @@
 package indi.tudan.ddlgenerater.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import indi.tudan.ddlgenerater.context.SpringContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * 模板工具类
@@ -16,6 +17,7 @@ import java.util.Map;
  * @date 2019-09-19 16:48:58
  * @since 1.0
  */
+@Slf4j
 public class FreemarkerUtil {
 
     /**
@@ -30,15 +32,15 @@ public class FreemarkerUtil {
      * @return String
      * @date 2019-09-19 16:50:55
      */
-    public static String parseTpl(String ftlName, Map<String, Object> params) {
+    public static String parseFTL(String ftlName, JSONObject params) {
         Configuration cfg = SpringContextHolder.getBean(Configuration.class);
-        String html = null;
+        String content = null;
         try {
             Template t = cfg.getTemplate(ftlName + ".ftl");
-            html = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
+            content = FreeMarkerTemplateUtils.processTemplateIntoString(t, params);
         } catch (IOException | TemplateException e) {
-            e.printStackTrace();
+            log.error("模板解析失败", e);
         }
-        return html;
+        return content;
     }
 }

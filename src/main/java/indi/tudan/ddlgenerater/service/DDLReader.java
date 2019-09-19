@@ -1,14 +1,13 @@
-package indi.tudan.ddlgenerater.excel;
+package indi.tudan.ddlgenerater.service;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Console;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.alibaba.fastjson.JSONObject;
 import indi.tudan.ddlgenerater.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,26 +20,66 @@ import java.util.List;
 public class DDLReader {
 
     /**
-     * 读取 excel
+     * 读取 excel，获取表结构对象
      *
+     * @param path       Excel 路径
+     * @param sheetIndex 工作簿序号
      * @date 2019-09-19 16:02:28
      */
-    public static void reader(String path, int sheetIndex) {
+    public static JSONObject getTables(String path, int sheetIndex) {
 
+        // 读取数据库设计文档
         ExcelReader reader = ExcelUtil.getReader(FileUtil.file(path), sheetIndex);
         List<List<Object>> readAll = reader.read();
-        List<JSONObject> tables = new ArrayList<>();
+
+        // 所有表结构对象
+        JSONObject tables = new JSONObject(true);
+
+        // 当前正在处理的表名
+        String tableName = "";
+
+        // 开始遍历设计数据
         for (List<Object> row : readAll) {
+//            Console.log(row);
+
+            if (ObjectUtil.isEmpty(row)) {
+                continue;
+            }
+
+            // 如果是表头，则跳过
+            if (isHeader(row)) {
+//                Console.log(row);
+                continue;
+            }
+
+            // 原字符串
+            String rawString = StringUtils.getStr(row.get(0));
+
+            // 如果是标题行，则提取表名
             boolean isTitle = isTitle(row);
             if (isTitle) {
-                String str = StringUtils.getStr(row.get(0));
-                String tableName = str.substring(0, str.indexOf("（")).toLowerCase();
-                Console.log(tableName);
+                tableName = getTableName(rawString);
+                tables.put(tableName, new JSONObject(true));
+//                Console.log(tableName);
+            } else {
+                tables.getJSONObject(tableName).fluentPut(rawString, row);
             }
-            /*if (isHeader(row)) {
-                Console.log(row);
-            }*/
         }
+
+        return tables;
+    }
+
+    /**
+     * 获取表名
+     *
+     * @param rawString 原字符串
+     * @return String
+     * @author wangtan
+     * @date 2019-09-19 20:36:11
+     * @since 1.0
+     */
+    private static String getTableName(String rawString) {
+        return rawString.substring(0, rawString.indexOf("（")).toLowerCase();
     }
 
     /**
@@ -80,30 +119,4 @@ public class DDLReader {
                 || "备注".equals(row.get(4));
     }
 
-    public static void main(String[] args) {
-        reader("C:\\Users\\tudan\\Desktop\\差异化结算大屏\\集团大屏新专题与预警模型0919 - 副本.xlsx", 0);
-    }
-
-    /**
-     * 创建一个表对象
-     *
-     * @param tableName 表名
-     * @return JSONObject
-     * @date 2019-09-19 17:26:10
-     */
-    private JSONObject createTableJson(String tableName) {
-        return new JSONObject().fluentPut("tableName", tableName);
-    }
-
-    /**
-     * 更新一个表对象
-     *
-     * @param row 行数据
-     * @return JSONObject
-     * @date 2019-09-19 17:27:01
-     */
-    private JSONObject updateTableJson(List<Object> row) {
-        JSONObject table = new JSONObject();
-        return table;
-    }
 }
