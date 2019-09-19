@@ -83,4 +83,27 @@ public class DDLReader {
     public static void main(String[] args) {
         reader("C:\\Users\\tudan\\Desktop\\差异化结算大屏\\集团大屏新专题与预警模型0919 - 副本.xlsx", 0);
     }
+
+    /**
+     * 创建一个表对象
+     *
+     * @param tableName 表名
+     * @return JSONObject
+     * @date 2019-09-19 17:26:10
+     */
+    private JSONObject createTableJson(String tableName) {
+        return new JSONObject().fluentPut("tableName", tableName);
+    }
+
+    /**
+     * 更新一个表对象
+     *
+     * @param row 行数据
+     * @return JSONObject
+     * @date 2019-09-19 17:27:01
+     */
+    private JSONObject updateTableJson(List<Object> row) {
+        JSONObject table = new JSONObject();
+        return table;
+    }
 }
