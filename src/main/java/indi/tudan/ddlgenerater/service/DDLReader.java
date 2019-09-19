@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.tudan.ddlgenerater.utils.StringUtils;
 
@@ -59,10 +60,18 @@ public class DDLReader {
             boolean isTitle = isTitle(row);
             if (isTitle) {
                 tableName = getTableName(rawString);
-                tables.put(tableName, new JSONObject(true));
+                tables.put(tableName, new JSONObject(true)
+                        .fluentPut("tableName", tableName)
+                        .fluentPut("table", new JSONArray()));
 //                Console.log(tableName);
             } else {
-                tables.getJSONObject(tableName).fluentPut(rawString, row);
+                JSONObject rowJSON = new JSONObject();
+                rowJSON.fluentPut("field", row.get(0));
+                rowJSON.fluentPut("type", row.get(1));
+                rowJSON.fluentPut("nullable", row.get(2));
+                rowJSON.fluentPut("definition", row.get(3));
+                rowJSON.fluentPut("remark", row.get(4));
+                tables.getJSONObject(tableName).getJSONArray("table").add(rowJSON);
             }
         }
 

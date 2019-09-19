@@ -1,5 +1,5 @@
 /*建表语句*/
-CREATE TABLE IF NOT EXISTS `info_node_200_10_201901` (
+CREATE TABLE IF NOT EXISTS `${tableName}` (
 `id` bigint(20) NOT NULL AUTO_INCREMENT,
 `freq` varchar(10) DEFAULT NULL,
 `info_state` tinyint(4) DEFAULT NULL,
