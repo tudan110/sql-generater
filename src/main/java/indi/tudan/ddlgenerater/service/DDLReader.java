@@ -75,6 +75,9 @@ public class DDLReader {
             }
         }
 
+        // 关闭文件
+        reader.close();
+
         return tables;
     }
 

@@ -1,5 +1,7 @@
 package indi.tudan.ddlgenerater.service;
 
+import cn.hutool.core.io.file.FileWriter;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import indi.tudan.ddlgenerater.utils.ExcelUtils;
 import indi.tudan.ddlgenerater.utils.FreemarkerUtil;
@@ -61,7 +63,12 @@ public class TableCreater {
      * @date 2019-09-19 21:02:59
      */
     private void parseTableDDL(JSONObject table) {
-        System.out.println(FreemarkerUtil.parseFTL(ftlName, table));
+        //System.out.println(FreemarkerUtil.parseFTL(ftlName, table));
+
+        FileWriter writer = new FileWriter(
+                StrUtil.format("C:/Users/tudan/Desktop/差异化结算大屏/ddl/{}.sql",
+                        table.getString("tableName")));
+        writer.write(FreemarkerUtil.parseFTL(ftlName, table));
     }
 
 }
