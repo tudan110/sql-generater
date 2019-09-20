@@ -1,4 +1,4 @@
-package indi.tudan.ddlgenerater.utils;
+package indi.tudan.sqlgenerater.utils;
 
 /**
  * String 工具类

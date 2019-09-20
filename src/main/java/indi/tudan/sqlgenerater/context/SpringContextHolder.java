@@ -1,4 +1,4 @@
-package indi.tudan.ddlgenerater.context;
+package indi.tudan.sqlgenerater.context;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

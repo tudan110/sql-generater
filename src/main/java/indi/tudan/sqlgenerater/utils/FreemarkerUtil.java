@@ -1,10 +1,10 @@
-package indi.tudan.ddlgenerater.utils;
+package indi.tudan.sqlgenerater.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import indi.tudan.ddlgenerater.context.SpringContextHolder;
+import indi.tudan.sqlgenerater.context.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 

@@ -1,2 +1,2 @@
-# ddl-generater
-数据定义sql生成
+# sql-generater
+根据模板生成 sql

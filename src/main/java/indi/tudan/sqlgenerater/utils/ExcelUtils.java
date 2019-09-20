@@ -1,4 +1,4 @@
-package indi.tudan.ddlgenerater.utils;
+package indi.tudan.sqlgenerater.utils;
 
 import cn.hutool.core.io.FileUtil;
 import lombok.extern.slf4j.Slf4j;

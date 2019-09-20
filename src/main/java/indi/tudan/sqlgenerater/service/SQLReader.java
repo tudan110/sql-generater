@@ -1,4 +1,4 @@
-package indi.tudan.ddlgenerater.service;
+package indi.tudan.sqlgenerater.service;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -7,7 +7,7 @@ import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import indi.tudan.ddlgenerater.utils.StringUtils;
+import indi.tudan.sqlgenerater.utils.StringUtils;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  * @date 2019-09-19 15:46:59
  * @since 1.0
  */
-public class DDLReader {
+public class SQLReader {
 
     /**
      * 读取 excel，获取表结构对象
@@ -62,6 +62,7 @@ public class DDLReader {
                 tableName = getTableName(rawString);
                 tables.put(tableName, new JSONObject(true)
                         .fluentPut("tableName", tableName)
+                        .fluentPut("tableComment", getTableComment(rawString))
                         .fluentPut("table", new JSONArray()));
 //                Console.log(tableName);
             } else {
@@ -86,12 +87,21 @@ public class DDLReader {
      *
      * @param rawString 原字符串
      * @return String
-     * @author wangtan
      * @date 2019-09-19 20:36:11
-     * @since 1.0
      */
     private static String getTableName(String rawString) {
         return rawString.substring(0, rawString.indexOf("（")).toLowerCase();
+    }
+
+    /**
+     * 获取表注释
+     *
+     * @param rawString 原字符串
+     * @return String
+     * @date 2019-09-20 14:07:15
+     */
+    private static String getTableComment(String rawString) {
+        return rawString.substring(rawString.indexOf("（") + 1, rawString.lastIndexOf("）"));
     }
 
     /**

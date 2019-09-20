@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>indi.tudan</groupId>
-    <artifactId>ddl-generater</artifactId>
+    <artifactId>sql-generater</artifactId>
     <version>1.0</version>
-    <name>ddl-generater</name>
-    <description>数据定义sql生成</description>
+    <name>sql-generater</name>
+    <description>根据模板生成 sql</description>
 
     <properties>
         <java.version>1.8</java.version>
