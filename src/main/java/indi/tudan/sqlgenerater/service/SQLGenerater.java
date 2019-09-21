@@ -139,16 +139,16 @@ public class SQLGenerater {
                 System.out.println("4. 输出路径");
             }
 
-            switch (scanner.nextInt()) {
-                case 1:
+            switch (scanner.next()) {
+                case "1":
                     System.out.println("请输入 Excel 路径");
                     setExcelPath(scanner.next());
                     break;
-                case 2:
+                case "2":
                     System.out.println("请输入模板类型（如：create.ftl，则输入 create）");
                     setType(scanner.next());
                     break;
-                case 3:
+                case "3":
                     System.out.println("请输入输出模式");
                     setMode(scanner.next());
                     if ("file".equals(mode)) {
@@ -176,12 +176,12 @@ public class SQLGenerater {
                         }
                     }
                     break;
-                case 4:
+                case "4":
                     System.out.println("请输入输出路径");
                     setResultPath(scanner.next());
                     break;
                 default:
-                    System.out.println("没有您要修改的配置项，继续按照当前配置执行");
+                    System.out.println("没有您要修改的配置项，程序继续执行");
                     break;
             }
 
