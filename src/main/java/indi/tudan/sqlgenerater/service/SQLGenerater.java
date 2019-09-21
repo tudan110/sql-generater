@@ -2,15 +2,20 @@ package indi.tudan.sqlgenerater.service;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileWriter;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import indi.tudan.sqlgenerater.utils.ExcelUtils;
 import indi.tudan.sqlgenerater.utils.FreemarkerUtil;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * 创建表 DDL 生成器
@@ -21,7 +26,28 @@ import java.util.Map;
  */
 @Data
 @Builder
+@Slf4j
 public class SQLGenerater {
+
+    /**
+     * 待解析 Excel 路径
+     */
+    private String excelPath;
+
+    /**
+     * sql 输出路径
+     */
+    private String resultPath;
+
+    /**
+     * 模式：console:打印到控制台；file:生成 sql 文件
+     */
+    private String mode;
+
+    /**
+     * 类型
+     */
+    private String type;
 
     /**
      * 模板名称
@@ -29,133 +55,194 @@ public class SQLGenerater {
     private String ftlName;
 
     /**
-     * 程序开始
+     * 执行
      *
-     * @param args 控制台输入参数
      * @date 2019-09-20 15:25:35
      */
-    public static void exec(String... args) {
+    public void exec() {
 
-        // 默认输入 Excel 路径
-        String excelPath = "C:/Users/tudan/Desktop/差异化结算大屏/集团大屏新专题与预警模型0919.xlsx";
-
-        // 默认 sql 输出路径
-        String resultPath = "C:/Users/tudan/Desktop/差异化结算大屏/ddl1";
-
-        // 默认模式：console:打印到控制台；file:生成 sql 文件
-        String mode = "console";
-
-        // 默认类型
-        String type = "create";
-
-        if (ObjectUtil.isNotEmpty(args) || args.length != 0) {
-            for (String arg : args) {
-                int equalIndex = arg.indexOf("=");
-                switch (arg.substring(0, equalIndex)) {
-
-                    // 输入文件
-                    case "--ep":
-                    case "--path":
-                    case "--p":
-                        excelPath = arg.substring(equalIndex + 1);
-                        break;
-
-                    // 输出模式
-                    case "--m":
-                    case "--mode":
-                        mode = arg.substring(equalIndex + 1);
-                        break;
-
-                    // 输出路径
-                    case "--rp":
-                    case "--r":
-                    case "--result":
-                        resultPath = arg.substring(equalIndex + 1);
-                        break;
-
-                    // 什么类型
-                    case "--type":
-                    case "--t":
-                        type = arg.substring(equalIndex + 1);
-                        break;
-                    default:
-                        break;
-                }
-            }
+        if (check()) {
+            parseTablesDDL();
         }
-
-        check(excelPath, mode, resultPath, type);
-
-        SQLGenerater.builder().ftlName(type).build().parseTablesDDL(excelPath, mode, resultPath);
     }
 
     /**
      * 检查
      *
-     * @param excelPath  Excel 路径
-     * @param mode       输出模式
-     * @param resultPath 输出路径
-     * @param type       类型
      * @date 2019-09-20 16:08:21
      */
-    private static void check(String excelPath, String mode, String resultPath, String type) {
-        System.out.println(StrUtil.format("\n生成 {} DDL", type));
+    private boolean check() {
+        boolean result;
+        Scanner scanner = new Scanner(System.in);
+
+        // 打印配置
+        result = printSettings(scanner);
+
+        return result;
+    }
+
+    /**
+     * 打印配置
+     *
+     * @param scanner 控制台输入
+     * @date 2019-09-21 20:10:24
+     */
+    private boolean printSettings(Scanner scanner) {
+
+        System.out.println("\n=======================================================================================\n");
+        System.out.println(StrUtil.format("根据模板 【 {}.ftl 】 生成 sql", type));
+        System.out.println("\n当前配置如下");
         System.out.println(StrUtil.format("待解析文件：{}", excelPath));
         if (!FileUtil.isFile(excelPath)) {
             System.out.println("Excel 文件不存在");
-            System.exit(0);
+            return false;
         }
         System.out.println(StrUtil.format("输出模式：{}", mode));
+
         if ("file".equals(mode)) {
-            System.out.println(StrUtil.format("输出路径：{}\n", resultPath));
+            System.out.println(StrUtil.format("输出路径：{}", resultPath));
             if (!FileUtil.isDirectory(resultPath)) {
-                System.out.println("输出路径不存在，程序自动创建");
-                FileUtil.mkdir(resultPath);
+                System.out.println("输出路径不存在，是否创建？(Y/N)");
+                if (yesOrNo(scanner.next())) {
+                    FileUtil.mkdir(resultPath);
+                    System.out.println("路径创建成功");
+                } else {
+                    System.out.println("输出路径不存在，正在退出程序 ...");
+                    return false;
+                }
             }
-        } else {
-            System.out.println();
         }
+        System.out.println("\n=======================================================================================\n");
+
+        // 询问是否需要更新配置
+        askUpdateSettings(scanner);
+
+        return true;
+    }
+
+    /**
+     * 更新配置
+     *
+     * @param scanner 控制台输入
+     * @date 2019-09-21 20:06:02
+     */
+    private void askUpdateSettings(Scanner scanner) {
+
+        System.out.println("是否需要修改配置？(Y/N)");
+
+        if (yesOrNo(scanner.next())) {
+            System.out.println("请选择需要修改的配置项序号：");
+            System.out.println("1. 待解析 Excel 路径");
+            System.out.println(StrUtil.format("2. 模板类型（{}）", getAllTplName()));
+            System.out.println("3. 输出模式（console、file）");
+            if ("file".equals(mode)) {
+                System.out.println("4. 输出路径");
+            }
+
+            switch (scanner.nextInt()) {
+                case 1:
+                    System.out.println("请输入 Excel 路径");
+                    setExcelPath(scanner.next());
+                    break;
+                case 2:
+                    System.out.println("请输入模板类型（如：create.ftl，则输入 create）");
+                    setType(scanner.next());
+                    break;
+                case 3:
+                    System.out.println("请输入输出模式");
+                    setMode(scanner.next());
+                    if ("file".equals(mode)) {
+                        System.out.println(StrUtil.format("当前输出路径：{}，是否需要修改？(Y/N)", resultPath));
+                        if (yesOrNo(scanner.next())) {
+                            System.out.println("请输入输出路径");
+                            setResultPath(scanner.next());
+                        }
+                        if (!FileUtil.isDirectory(resultPath)) {
+                            System.out.println("输出路径不存在，是否创建？(Y/N)");
+                            if (yesOrNo(scanner.next())) {
+                                FileUtil.mkdir(resultPath);
+                                System.out.println("路径创建成功");
+                            } else {
+                                System.out.println("输出路径不存在，请务必指定一个路径，若不指定或者路径错误，则创建当前路径");
+                                String tempResultPath = scanner.next();
+                                try {
+                                    System.out.println(StrUtil.format("路径创建成功：{}", FileUtil.mkdir(tempResultPath).getAbsolutePath()));
+                                    setResultPath(tempResultPath);
+                                } catch (Exception e) {
+                                    log.error("路径创建失败，使用默认路径创建", e);
+                                    System.out.println(StrUtil.format("路径创建成功：{}", FileUtil.mkdir(resultPath).getAbsolutePath()));
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 4:
+                    System.out.println("请输入输出路径");
+                    setResultPath(scanner.next());
+                    break;
+                default:
+                    System.out.println("没有您要修改的配置项，继续按照当前配置执行");
+                    break;
+            }
+
+            askUpdateSettings(scanner);
+        }
+
+    }
+
+    /**
+     * 判断是或否
+     *
+     * @param yesOrNo 字符串
+     * @return boolean
+     * @date 2019-09-21 18:12:47
+     */
+    private boolean yesOrNo(String yesOrNo) {
+        return "Y".equalsIgnoreCase(yesOrNo);
+    }
+
+    /**
+     * 获取所有模板名称
+     *
+     * @return String
+     * @date 2019-09-21 18:22:23
+     */
+    private String getAllTplName() {
+        return Arrays.stream(FileUtil.ls(StrUtil.format("{}{}", ClassUtil.getClassPath(), "templates")))
+                .map(File::getName).collect(Collectors.joining("、"));
     }
 
     /**
      * 解析 Excel 所有工作簿
      *
-     * @param excelPath  Excel 路径
-     * @param mode       输出模式
-     * @param resultPath 输出路径
      * @date 2019-09-19 21:47:04
      */
-    public void parseTablesDDL(String excelPath, String mode, String resultPath) {
+    public void parseTablesDDL() {
         for (int i = 0, len = ExcelUtils.getNumberOfSheets(excelPath); i < len; i++) {
-            parseTablesDDL(excelPath, i, mode, resultPath);
+            parseTablesDDL(i);
         }
     }
 
     /**
      * 解析 Excel 指定工作簿
      *
-     * @param path       Excel 路径
      * @param sheetIndex 工作簿序号
-     * @param mode       输出模式
-     * @param resultPath 输出路径
      * @date 2019-09-19 21:24:22
      */
-    public void parseTablesDDL(String path, int sheetIndex, String mode, String resultPath) {
-        JSONObject tables = SQLReader.getTables(path, sheetIndex);
+    public void parseTablesDDL(int sheetIndex) {
+        JSONObject tables = SQLReader.getTables(excelPath, sheetIndex);
         for (Map.Entry<String, Object> table : tables.entrySet()) {
-            parseTableDDL((JSONObject) table.getValue(), mode, resultPath);
+            parseTableDDL((JSONObject) table.getValue());
         }
     }
 
     /**
      * 解析单个表 DDL
      *
-     * @param table      表结构对象
-     * @param mode       输出模式
-     * @param resultPath 输出路径
+     * @param table 表结构对象
      * @date 2019-09-19 21:02:59
      */
-    private void parseTableDDL(JSONObject table, String mode, String resultPath) {
+    private void parseTableDDL(JSONObject table) {
 
         switch (mode) {
             case "console":
