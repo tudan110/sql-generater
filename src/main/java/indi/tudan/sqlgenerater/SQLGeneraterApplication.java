@@ -24,8 +24,8 @@ public class SQLGeneraterApplication {
     /**
      * --t=create
      * --m=console
-     * --p="C:/Users/tudan/Desktop/差异化结算大屏/集团大屏新专题与预警模型0919.xlsx"
-     * --r="C:/Users/tudan/Desktop/差异化结算大屏/ddl"
+     * --p="C:/Users/tudan/Desktop/表结构设计.xlsx"
+     * --r="C:/Users/tudan/Desktop/ddl"
      *
      * @param args 初始化参数
      * @date 2019-09-21 16:49:59
@@ -34,7 +34,7 @@ public class SQLGeneraterApplication {
 
         // 待解析 Excel 路径
         String excelPath = StrUtil.format("{}{}/{}",
-                ClassUtil.getClassPath(), "static", "集团大屏新专题与预警模型0919.xlsx");
+                ClassUtil.getClassPath(), "static", "表结构设计.xlsx");
 
         //当前用户桌面
         File desktopDir = FileSystemView.getFileSystemView().getHomeDirectory();
