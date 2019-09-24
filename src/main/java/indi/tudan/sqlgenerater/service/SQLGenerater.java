@@ -146,7 +146,9 @@ public class SQLGenerater {
                     break;
                 case "2":
                     System.out.println("请输入模板类型（如：create.ftl，则输入 create）");
-                    setType(scanner.next());
+                    String type = scanner.next();
+                    setType(type);
+                    setFtlName(type);
                     break;
                 case "3":
                     System.out.println("请输入输出模式");
