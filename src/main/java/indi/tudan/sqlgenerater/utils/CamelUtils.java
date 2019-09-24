@@ -98,6 +98,8 @@ public class CamelUtils {
 		System.out.println(camelToUnderline(aaa));
 
 		System.out.println(StringUtils.capitalStr(underlineToCamel(aaa)));
+
+		System.out.println(underlineToCamel("cnet_fee_with_p2p_d_sum"));
 	}
 
 }
