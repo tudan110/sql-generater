@@ -21,6 +21,16 @@ public class SpringBeanUtils implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     /**
+     * 获取 spring 上下文
+     *
+     * @return spring 上下文
+     * @date 2019年06月25日 16:05:26
+     */
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    /**
      * 设置 spring 上下文
      *
      * @param applicationContext spring 上下文
@@ -30,16 +40,6 @@ public class SpringBeanUtils implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         SpringBeanUtils.applicationContext = applicationContext;
-    }
-
-    /**
-     * 获取 spring 上下文
-     *
-     * @return spring 上下文
-     * @date 2019年06月25日 16:05:26
-     */
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
     }
 
     /**
