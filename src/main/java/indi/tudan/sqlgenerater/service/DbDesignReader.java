@@ -13,13 +13,13 @@ import indi.tudan.sqlgenerater.utils.StringUtils;
 import java.util.List;
 
 /**
- * 读取表定义
+ * 读取数据库设计文档
  *
  * @author wangtan
  * @date 2019-09-19 15:46:59
  * @since 1.0
  */
-public class SQLReader {
+public class DbDesignReader {
 
 	/**
 	 * 读取 excel，获取表结构对象

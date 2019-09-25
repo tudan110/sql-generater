@@ -254,7 +254,7 @@ public class SQLGenerater {
 	 * @date 2019-09-19 21:24:22
 	 */
 	public void parseTablesDDL(int sheetIndex) {
-		JSONObject tables = SQLReader.getTables(excelPath, sheetIndex);
+		JSONObject tables = DbDesignReader.getTables(excelPath, sheetIndex);
 		for (Map.Entry<String, Object> table : tables.entrySet()) {
 			parseTableDDL((JSONObject) table.getValue());
 		}
