@@ -9,6 +9,8 @@
 
 templates 下面的文件夹是数据库方言或模板组，可以根据需要直接创建文件夹，程序会自动扫描；文件夹里面是 FreeMarker 模板，根据模板生成 DDL、DQL、DML 脚本，可以根据需要扩展，欢迎指正错误。
 
+注意：生成的脚本，最后一个字段后面的逗号可能需要删除。
+
 
 
 ## 启动 indi.tudan.sqlgenerater.SQLGeneraterApplication
