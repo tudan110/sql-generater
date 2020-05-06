@@ -1,12 +1,12 @@
-package indi.tudan.sqlgenerater.service;
+package indi.tudan.sqlgenerator.service;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import indi.tudan.sqlgenerater.utils.ExcelUtils;
-import indi.tudan.sqlgenerater.utils.FreemarkerUtil;
+import indi.tudan.sqlgenerator.utils.ExcelUtils;
+import indi.tudan.sqlgenerator.utils.FreemarkerUtil;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 @Slf4j
-public class SQLGenerater {
+public class SQLGenerator {
 
     /**
      * 数据库方言或模板组

@@ -1,4 +1,4 @@
-package indi.tudan.sqlgenerater.service;
+package indi.tudan.sqlgenerator.service;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -7,8 +7,8 @@ import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import indi.tudan.sqlgenerater.utils.CamelUtils;
-import indi.tudan.sqlgenerater.utils.StringUtils;
+import indi.tudan.sqlgenerator.utils.CamelUtils;
+import indi.tudan.sqlgenerator.utils.StringUtils;
 
 import java.util.List;
 

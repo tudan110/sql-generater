@@ -1,5 +1,5 @@
 /*
-package indi.tudan.sqlgenerater;
+package indi.tudan.sqlgenerator;
 
 import cn.hutool.core.util.NumberUtil;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SQLGeneraterApplicationTests {
+public class SQLGeneratorApplicationTests {
 
     @Test
     public void contextLoads() {

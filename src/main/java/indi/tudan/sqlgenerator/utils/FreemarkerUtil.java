@@ -1,4 +1,4 @@
-package indi.tudan.sqlgenerater.utils;
+package indi.tudan.sqlgenerator.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import freemarker.template.Configuration;

@@ -1,4 +1,4 @@
-package indi.tudan.sqlgenerater.utils;
+package indi.tudan.sqlgenerator.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

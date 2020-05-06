@@ -1,9 +1,9 @@
-package indi.tudan.sqlgenerater;
+package indi.tudan.sqlgenerator;
 
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import indi.tudan.sqlgenerater.service.SQLGenerater;
+import indi.tudan.sqlgenerator.service.SQLGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,11 +11,11 @@ import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 
 @SpringBootApplication
-public class SQLGeneraterApplication {
+public class SQLGeneratorApplication {
 
     public static void main(String... args) {
 
-        SpringApplication.run(SQLGeneraterApplication.class, args);
+        SpringApplication.run(SQLGeneratorApplication.class, args);
 
         // 程序开始执行
         init(args);
@@ -95,7 +95,7 @@ public class SQLGeneraterApplication {
         }
 
         // 开始解析
-        SQLGenerater.builder()
+        SQLGenerator.builder()
                 .dialect(dialect)
                 .ftlName(type)
                 .excelPath(excelPath)

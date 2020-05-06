@@ -19,7 +19,7 @@ templates 下面的**文件夹**是数据库方言或模板组，可以根据需
 
 
 
-## 启动 indi.tudan.sqlgenerater.SQLGeneraterApplication
+## 启动 indi.tudan.sqlgenerator.SQLGeneraterApplication
 
 根据控制台提示设置配置
 ```shell script
