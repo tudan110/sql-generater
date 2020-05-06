@@ -7,9 +7,15 @@
 
 
 
-templates 下面的文件夹是数据库方言或模板组，可以根据需要直接创建文件夹，程序会自动扫描；文件夹里面是 FreeMarker 模板，根据模板生成 DDL、DQL、DML 脚本，可以根据需要扩展，欢迎指正错误。
+templates 下面的**文件夹**是数据库方言或模板组，可以根据需要直接创建文件夹，程序会自动扫描；文件夹里面是 FreeMarker 模板文件，根据模板生成 DDL、DQL、DML 脚本，可以根据需要扩展，欢迎指正错误。
 
-注意：生成的脚本，最后一个字段后面的逗号可能需要删除。
+- mbg: mybatis generator
+- mysql: mysql 数据库 
+- oracle: oracle 数据库 
+- pgsql: pgsql 数据库 
+- teledb: teledb 数据库 
+
+注意：生成的脚本，**最后一个字段后面的逗号可能需要删除**。
 
 
 
@@ -60,7 +66,7 @@ y
 create
 是否需要修改配置？(Y/N)
 n
-/*建表语句*/
+/* 建表语句 */
 CREATE TABLE IF NOT EXISTS `test_1` (
             `id` bigint NOT NULL AUTO_INCREMENT COMMENT '数据唯一标识【序列，自增长】',
             `busi_date` date NOT NULL COMMENT '业务日期【示例：2019-01-01】',
@@ -74,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `test_1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='测试表1';
 
 
-/*建表语句*/
+/* 建表语句 */
 CREATE TABLE IF NOT EXISTS `test_2` (
             `id` bigint NOT NULL AUTO_INCREMENT COMMENT '数据唯一标识【序列，自增长】',
             `user_id` char(10) NOT NULL COMMENT '编码【示例：1001】',
@@ -84,9 +90,5 @@ CREATE TABLE IF NOT EXISTS `test_2` (
         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='测试表2';
 
-
-Disconnected from the target VM, address: '127.0.0.1:57940', transport: 'socket'
-
-Process finished with exit code 0
 
 ```
