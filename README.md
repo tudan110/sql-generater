@@ -15,7 +15,33 @@ templates 下面的**文件夹**是数据库方言或模板组，可以根据需
 - pgsql: pgsql 数据库 
 - teledb: teledb 数据库 
 
-注意：生成的脚本，**最后一个字段后面的逗号可能需要删除**。
+注意：
+- 生成的脚本，**最后一个字段后面的逗号可能需要删除**。
+- 请按照 excel 模板来填写表结构设计，根据自己的需求，很多地方的代码是写死的，比如获取表名和表注释，如下代码
+
+```java
+    /**
+     * 获取表名
+     *
+     * @param rawString 原字符串
+     * @return String
+     * @date 2019-09-19 20:36:11
+     */
+    private static String getTableName(String rawString) {
+        return rawString.substring(0, rawString.indexOf("（")).toLowerCase();
+    }
+
+    /**
+     * 获取表注释
+     *
+     * @param rawString 原字符串
+     * @return String
+     * @date 2019-09-20 14:07:15
+     */
+    private static String getTableComment(String rawString) {
+        return rawString.substring(rawString.indexOf("（") + 1, rawString.lastIndexOf("）"));
+    }
+```
 
 
 
