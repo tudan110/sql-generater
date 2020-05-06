@@ -1,4 +1,4 @@
-/*建表语句*/
+/* 建表语句 */
 CREATE TABLE IF NOT EXISTS `${tableName}` (
 <#if table??>
     <#list table as row>
@@ -12,6 +12,6 @@ CREATE TABLE IF NOT EXISTS `${tableName}` (
 </#if>
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${tableComment}';
 
-/*sharding语句*/
+/* sharding语句 */
 sharding @@table name='${tableName}' set type='sharding' and sharding_algo='PartitionByMod' and sharding_id='${pk}' and dn='bigscreen_1,bigscreen_2,bigscreen_3,bigscreen_4,bigscreen_5,bigscreen_6,bigscreen_7,bigscreen_8';
 

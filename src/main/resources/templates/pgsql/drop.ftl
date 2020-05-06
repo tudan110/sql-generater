@@ -1,2 +1,2 @@
-<#--/*删表语句*/-->
+<#--/* 删表语句 */-->
 DROP TABLE IF EXISTS ${tableName};
