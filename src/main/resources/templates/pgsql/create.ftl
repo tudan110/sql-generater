@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "${tableName}" (
         "${field.field}" ${field.type}<#if field.nullable == "N"> NOT NULL</#if><#if field.definition?index_of("唯一标识")!=-1 || field.remark?index_of("序列")!=-1><#assign pk = field.field></#if><#if (field_index + 1 == table?size && !pk??)><#else>,</#if>
     </#list>
     <#if pk??>
-        PRIMARY KEY ("${pk}")
+        CONSTRAINT ${tableName}_pk PRIMARY KEY ("${pk}")
     </#if>
 </#if>
 );
