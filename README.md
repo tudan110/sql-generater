@@ -1,5 +1,5 @@
 # sql-generater
-根据模板生成 sql
+根据 freemarker 模板生成 sql，需要将表结构设计写入到 excel 中，参考 src/main/resources/static/表结构设计.xlsx，这个 excel 用于 mysql，不同数据库的字段类型不同。
 
 ## 项目结构图
 
