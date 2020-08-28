@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.tudan.sqlgenerator.utils.CamelUtils;
 import indi.tudan.sqlgenerator.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * @date 2019-09-19 15:46:59
  * @since 1.0
  */
+@Slf4j
 public class DbDesignReader {
 
     /**
@@ -136,11 +138,16 @@ public class DbDesignReader {
      * @date 2019-09-19 16:10:40
      */
     private static boolean isHeader(List<Object> row) {
-        return "属性名称".equals(row.get(0))
-                || "数据类型".equals(row.get(1))
-                || "是否可空".equals(row.get(2))
-                || "属性定义".equals(row.get(3))
-                || "备注".equals(row.get(4));
+        try {
+            return "属性名称".equals(row.get(0))
+                    || "数据类型".equals(row.get(1))
+                    || "是否可空".equals(row.get(2))
+                    || "属性定义".equals(row.get(3))
+                    || "备注".equals(row.get(4));
+        } catch (IndexOutOfBoundsException e) {
+            log.error("excel 内容格式有误。"/*, e*/);
+            return false;
+        }
     }
 
 }

@@ -254,7 +254,12 @@ public class SQLGenerator {
      * @date 2019-09-19 21:24:22
      */
     public void parseTablesDDL(int sheetIndex) {
-        JSONObject tables = DbDesignReader.getTables(excelPath, sheetIndex);
+        JSONObject tables = new JSONObject();
+        try {
+            tables = DbDesignReader.getTables(excelPath, sheetIndex);
+        } catch (IndexOutOfBoundsException e) {
+            log.error("excel 内容格式有误。"/*, e*/);
+        }
         for (Map.Entry<String, Object> table : tables.entrySet()) {
             parseTableDDL((JSONObject) table.getValue());
         }

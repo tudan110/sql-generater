@@ -22,6 +22,7 @@ public class SQLGeneratorApplication {
     }
 
     /**
+     * --d=mysql
      * --t=create
      * --m=console
      * --p="C:/Users/tudan/Desktop/表结构设计.xlsx"
@@ -63,6 +64,14 @@ public class SQLGeneratorApplication {
                         dialect = arg.substring(equalIndex + 1);
                         break;
 
+                    // 模板类型
+                    case "--type":
+                    case "--t":
+                        type = arg.substring(equalIndex + 1);
+                        break;
+                    default:
+                        break;
+
                     // 输入文件
                     case "--ep":
                     case "--path":
@@ -81,14 +90,6 @@ public class SQLGeneratorApplication {
                     case "--r":
                     case "--result":
                         resultPath = arg.substring(equalIndex + 1);
-                        break;
-
-                    // 模板类型
-                    case "--type":
-                    case "--t":
-                        type = arg.substring(equalIndex + 1);
-                        break;
-                    default:
                         break;
                 }
             }
